@@ -1,0 +1,26 @@
+[package]
+name = "hop"
+description = "Better search that hops to the right place."
+repository = "https://github.com/jchen/hop"
+license = "MIT"
+version = "0.0.1"
+authors = ["Jiahua Chen <hey@jiahua.io>"]
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[features]
+
+[dependencies]
+cfg-if = "0.1.2"
+worker = "0.0.9"
+form_urlencoded = "1.0.1"
+percent-encoding = "2.1.0"
+
+[profile.release]
+lto = "fat"
+codegen-units = 1
+opt-level = "s"
+# We don't really need panics since we're in Cloudflare Workers...
+panic = "abort"

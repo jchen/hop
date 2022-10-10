@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="robots" content="noindex">
+    <title>hop</title>
+    <link rel="search" type="application/opensearchdescription+xml" href="https://hop.jiahua.io/opensearch.xml"
+        title="hop" />
+    <link rel="icon" type="image/x-icon" href="/icon.png">
+</head>
+
+<body>
+    <div class="center container">
+        <div>
+            <h1>hop</h1>
+            <p><i>where to?</i></p>
+            <form action="search" method="get">
+                <input type="text" name="q" placeholder="Query" class="input" id="query">
+                <input type="submit" value="Hop!" class="search">
+            </form>
+        </div>
+        <div>
+            <h2>Commands</h2>
+            <!-- DOC -->
+        </div>
+    </div>
+</body>
+<style>
+    body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #faedcd;
+        font-family: 'Trebuchet MS', sans-serif;
+    }
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        max-width: 500;
+        padding: 30px;
+        border-radius: 10px;
+        background-color: #fefae0;
+    }
+
+    form {
+        display: flex;
+        flex-direction: row;
+    }
+
+    form>.input {
+        flex-grow: 4;
+    }
+
+    input[type=text],
+    select {
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+    }
+
+    form>.search {
+        flex-grow: 1;
+    }
+
+    input[type=submit] {
+        background-color: #4CAF50;
+        color: white;
+        padding: 12px 20px;
+        margin: 8px 0;
+        border: none;
+        cursor: pointer;
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    th {
+        font-size: .65em;
+        color: #b5a57b;
+        letter-spacing: 2px;
+    }
+
+    td {
+        padding: 10px;
+    }
+
+    td.command {
+        font-weight: 700;
+    }
+
+    tbody>tr:hover {
+        background-color: #faedcd;
+    }
+</style>
+<script>
+    // Focus on default
+    document.getElementById("query").focus();
+</script>
+
+</html>
