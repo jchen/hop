@@ -29,6 +29,7 @@ impl Hops for Handler {
         [ "leet", "lc" => Search LeetCode ]
         [ "ol" => Redirect Overleaf ]
         [ "ask" => Redirect Ask ]
+        [ "jello" => Redirect Jello ]
         [ "@ln" => Custom Ln ]
         default [ Search Google ]
         empty [ Redirect Hop ]

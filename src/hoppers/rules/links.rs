@@ -41,3 +41,9 @@ impl Domain for Ask {
     const URL: &'static str = "https://ask.brown.edu/";
     const DOMAIN_DOC: &'static str = "Brown ASK (Advising SideKick)";
 }
+
+pub struct Jello {}
+impl Domain for Jello {
+    const URL: &'static str = "https://static.jiahua.io/jello.jpeg";
+    const DOMAIN_DOC: &'static str = "jello?";
+}
