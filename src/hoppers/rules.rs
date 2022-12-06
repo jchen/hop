@@ -48,3 +48,6 @@ pub use ln::*;
 
 mod baidu;
 pub use baidu::*;
+
+mod googlescholar;
+pub use googlescholar::*;

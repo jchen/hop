@@ -9,9 +9,10 @@ pub struct Handler;
 impl Hops for Handler {
     hop! {
         [ "g" => Search Google ]
+        [ "gs" => Search GoogleScholar ]
         [ "b" => Search Baidu ]
         [ "yt" => Search YouTube ]
-        [ "in" => Search LinkedIn ]
+        [ "li" => Search LinkedIn ]
         [ "w", "wiki" => Search Wikipedia ]
         [ "gh" => Custom GitHub ]
         [ "wolf", "wa" => Search WolframAlpha ]

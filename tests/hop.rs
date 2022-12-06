@@ -76,9 +76,9 @@ fn youtube_extract() {
 
 #[test]
 fn linkedin() {
-    assert_hop_redirect!("in" => "https://www.linkedin.com");
-    assert_hop_redirect!("in jiahua" => "https://www.linkedin.com/search/results/all/?keywords=jiahua");
-    assert_hop_redirect!("in jiahua chen" => "https://www.linkedin.com/search/results/all/?keywords=jiahua+chen");
+    assert_hop_redirect!("li" => "https://www.linkedin.com");
+    assert_hop_redirect!("li jiahua" => "https://www.linkedin.com/search/results/all/?keywords=jiahua");
+    assert_hop_redirect!("li jiahua chen" => "https://www.linkedin.com/search/results/all/?keywords=jiahua+chen");
 }
 
 #[test]
