@@ -1,6 +1,6 @@
 import { HOMEPAGE } from './constants';
 import hoppers from './hoppers';
-import Google from './hoppers/google';
+import { Google } from './hoppers/reference';
 
 export function handle(q: string): URL {
 	if (q) {
@@ -10,6 +10,7 @@ export function handle(q: string): URL {
 				return url;
 			}
 		}
+		// Default query if doesn't match anything.
 		return Google.bareQuery(q);
 	}
 	return HOMEPAGE;
