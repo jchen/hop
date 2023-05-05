@@ -65,8 +65,8 @@ let hoppers: (typeof Hops)[] = [
 		static doc = 'Merriam-Webster';
 	},
 	class GitHubCodeSearch extends QuerySearch {
-		static invocations = ['ghcs'];
-		static site = new URL('https://github.com/search');
+		static invocations = ['zbgs'];
+		static site = new URL('https://github.com/search?type=code');
 		static searchUrl = new URL('https://github.com/search?type=code');
 		static queryKey = 'q';
 	},
