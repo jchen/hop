@@ -5,8 +5,10 @@ import { handle } from './utils/handler';
 
 const app = new Hono();
 
-// Static Pages
+// Static Content
 app.get('/', serveStatic({ path: './static/index.html' }));
+app.get('/index.css', serveStatic({ path: './static/index.css' }));
+app.get('/icon.png', serveStatic({ path: './static/icon.png' }));
 app.get('/opensearch.xml', serveStatic({ path: './static/opensearch.xml' }));
 
 // Search pathes

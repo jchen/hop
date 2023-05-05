@@ -2,18 +2,20 @@
 	"private": true,
 	"version": "0.0.0",
 	"scripts": {
-		"deploy": "wrangler publish src/index.ts",
-		"dev": "wrangler dev src/index.ts --local",
+		"deploy": "tailwindcss -i ./assets/static/base.css -o ./assets/static/index.css && wrangler publish src/index.ts",
+		"dev": "concurrently \"tailwindcss -i ./assets/static/base.css -o ./assets/static/index.css --watch\" \"wrangler dev src/index.ts --local\"",
 		"test": "jest --verbose",
 		"start-stackblitz": "WRANGLER_SEND_METRICS=false wrangler dev src/index.ts --local"
 	},
 	"devDependencies": {
 		"@cloudflare/workers-types": "^4.20230419.0",
 		"@types/jest": "^29.5.1",
+		"concurrently": "^8.0.1",
 		"esbuild": "^0.17.18",
 		"esbuild-jest": "^0.5.0",
 		"jest": "^29.5.0",
 		"jest-environment-miniflare": "^2.13.0",
+		"tailwindcss": "^3.3.2",
 		"wrangler": "^2.1.14"
 	},
 	"dependencies": {

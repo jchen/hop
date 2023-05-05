@@ -9,95 +9,32 @@
 			href="https://hop.jiahua.io/opensearch.xml"
 			title="hop"
 		/>
+		<link href="/index.css" rel="stylesheet" />
 		<link rel="icon" type="image/x-icon" href="/icon.png" />
 	</head>
 
-	<body>
-		<div class="center container">
-			<div>
-				<h1>hop</h1>
+	<body class="flex items-center justify-center bg-orange-200 min-h-screen">
+		<div class="flex flex-col max-w-xl p-8 rounded-lg bg-orange-100">
+			<div class="flex flex-col gap-4 items-center">
 				<p><i>where to?</i></p>
-				<form action="search" method="get">
-					<input type="text" name="q" placeholder="Query" class="input" id="query" />
-					<input type="submit" value="Hop!" class="search" />
+				<form action="search" method="get" class="flex flex-row">
+					<input
+						type="text"
+						name="q"
+						placeholder="hop hop hop..."
+						class="flex-grow px-3 py-4 mx-2 inline-block w-80"
+						id="query"
+					/>
+					<input
+						type="submit"
+						value="🐇"
+						class="block px-4 py-4 bg-green-500 text-white font-bold cursor-pointer"
+					/>
 				</form>
 			</div>
 		</div>
 	</body>
-	<style>
-		body {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			background-color: #faedcd;
-			font-family: 'Trebuchet MS', sans-serif;
-		}
-
-		.container {
-			display: flex;
-			flex-direction: column;
-			max-width: 500;
-			padding: 30px;
-			border-radius: 10px;
-			background-color: #fefae0;
-		}
-
-		form {
-			display: flex;
-			flex-direction: row;
-		}
-
-		form > .input {
-			flex-grow: 4;
-		}
-
-		input[type='text'],
-		select {
-			padding: 12px 20px;
-			margin: 8px 0;
-			display: inline-block;
-			border: 1px solid #ccc;
-			box-sizing: border-box;
-		}
-
-		form > .search {
-			flex-grow: 1;
-		}
-
-		input[type='submit'] {
-			background-color: #4caf50;
-			color: white;
-			padding: 12px 20px;
-			margin: 8px 0;
-			border: none;
-			cursor: pointer;
-		}
-
-		table {
-			border-collapse: collapse;
-			width: 100%;
-		}
-
-		th {
-			font-size: 0.65em;
-			color: #b5a57b;
-			letter-spacing: 2px;
-		}
-
-		td {
-			padding: 10px;
-		}
-
-		td.command {
-			font-weight: 700;
-		}
-
-		tbody > tr:hover {
-			background-color: #faedcd;
-		}
-	</style>
 	<script>
-		// Focus on default
 		document.getElementById('query').focus();
 	</script>
 </html>
