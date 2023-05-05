@@ -1,3 +1,8 @@
+/**
+ * End-to-end tests for the app.
+ * Relies on Jest Cloudflare Workers testing backend.
+ */
+
 import app from '.';
 
 describe('Static tests', () => {

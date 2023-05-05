@@ -13,14 +13,14 @@ app.get('/opensearch.xml', serveStatic({ path: './static/opensearch.xml' }));
 app.get('/search', c => {
 	const query = c.req.query('q');
 	if (query) {
-		let input = decodeURIComponent(query as string);
+		let input = decodeURIComponent(query as string).trim();
 		return c.redirect(handle(input).toString());
 	}
 	return c.redirect(HOMEPAGE.toString(), 302);
 });
 
 app.get('/:q', c => {
-	const q = c.req.param('q');
+	const q = c.req.param('q').trim();
 	return c.redirect(handle(q).toString());
 });
 
