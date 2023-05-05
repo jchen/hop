@@ -8,8 +8,16 @@ export class GitHub extends PathSearch {
 }
 
 export class GitHubCodeSearch extends QuerySearch {
-    static invocations = ['zbgs'];
-    static site = new URL('https://github.com/search?type=code');
-    static searchUrl = new URL('https://github.com/search?type=code');
-    static queryKey = 'q';
+	static invocations = ['zbgs'];
+	static site = new URL('https://github.com/search?type=code');
+	static searchUrl = new URL('https://github.com/search?type=code');
+	static queryKey = 'q';
+}
+
+export class LeetCode extends QuerySearch {
+	static invocations = ['lc'];
+	static site = new URL('https://leetcode.com/problemset/all');
+	static searchUrl = new URL('https://leetcode.com/problemset/all');
+	static queryKey = 'search';
+	static doc = 'LeetCode';
 }
