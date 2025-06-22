@@ -16,6 +16,22 @@ export function handle(q: string): URL {
 	return HOMEPAGE;
 }
 
+export function handleWithDisambiguate(q: string, requestUrl: string): URL {
+	if (q) {
+		for (let Hopper of hoppers) {
+			let url = Hopper.query(q);
+			if (url) {
+				return url;
+			}
+		}
+		// If no hopper matches, redirect to disambiguation page
+		const disambiguateUrl = new URL('/disambiguate.html', requestUrl);
+		disambiguateUrl.searchParams.set('q', q);
+		return disambiguateUrl;
+	}
+	return HOMEPAGE;
+}
+
 export function extract(q: string): string {
 	for (let Hopper of hoppers) {
 		let extracted = Hopper.extract(q);

@@ -15,6 +15,11 @@ describe('Static tests', () => {
 		const res = await app.request('http://localhost/opensearch.xml');
 		expect(res.status).toBe(200);
 	});
+
+	it('Disambiguation page should load', async () => {
+		const res = await app.request('http://localhost/disambiguate.html');
+		expect(res.status).toBe(200);
+	});
 });
 
 describe('Google search', () => {
@@ -82,10 +87,10 @@ describe('Tracking numbers', () => {
 		expect(res.headers.get('location')).toEqual('https://www.dhl.com/us-en/home/tracking/tracking-ecommerce.html?submit=1&tracking-id=1234567890');
 	});
 
-	it('Non-tracking number should default to Google', async () => {
+	it('Non-tracking number should redirect to disambiguation page', async () => {
 		const res = await app.request('http://localhost/hello world');
 		expect(res.status).toBe(302);
-		expect(res.headers.get('location')).toEqual('https://www.google.com/search?q=hello+world');
+		expect(res.headers.get('location')).toEqual('http://localhost/disambiguate.html?q=hello+world');
 	});
 });
 
@@ -93,25 +98,25 @@ describe('Bug fixes', () => {
 	it('Query with percent sign should not cause internal server error', async () => {
 		const res = await app.request('http://localhost/search?q=test%20query');
 		expect(res.status).toBe(302);
-		expect(res.headers.get('location')).toEqual('https://www.google.com/search?q=test+query');
+		expect(res.headers.get('location')).toEqual('http://localhost/disambiguate.html?q=test+query');
 	});
 
 	it('Query with lone percent sign should not cause internal server error', async () => {
 		const res = await app.request('http://localhost/search?q=%');
 		expect(res.status).toBe(302);
-		expect(res.headers.get('location')).toEqual('https://www.google.com/search?q=%25');
+		expect(res.headers.get('location')).toEqual('http://localhost/disambiguate.html?q=%25');
 	});
 
 	it('Query with malformed percent encoding should not cause internal server error', async () => {
 		const res = await app.request('http://localhost/search?q=%2');
 		expect(res.status).toBe(302);
-		expect(res.headers.get('location')).toEqual('https://www.google.com/search?q=%252');
+		expect(res.headers.get('location')).toEqual('http://localhost/disambiguate.html?q=%252');
 	});
 
 	it('Query with multiple percent signs should not cause internal server error', async () => {
 		const res = await app.request('http://localhost/search?q=%%test%%');
 		expect(res.status).toBe(302);
-		expect(res.headers.get('location')).toEqual('https://www.google.com/search?q=%25%25test%25%25');
+		expect(res.headers.get('location')).toEqual('http://localhost/disambiguate.html?q=%25%25test%25%25');
 	});
 
 	it('Google search with percent sign should extract search term correctly', async () => {
@@ -136,5 +141,26 @@ describe('Bug fixes', () => {
 		const res = await app.request('http://localhost/search?q=g+asdf%25');
 		expect(res.status).toBe(302);
 		expect(res.headers.get('location')).toEqual('https://www.google.com/search?q=asdf%25');
+	});
+});
+
+describe('Disambiguation', () => {
+	it('Unknown query should redirect to disambiguation page', async () => {
+		const res = await app.request('http://localhost/search?q=unknown+query');
+		expect(res.status).toBe(302);
+		expect(res.headers.get('location')).toEqual('http://localhost/disambiguate.html?q=unknown+query');
+	});
+
+	it('Query from disambiguation page with prefix should work', async () => {
+		const res = await app.request('http://localhost/search?q=yt+cats');
+		expect(res.status).toBe(302);
+		expect(res.headers.get('location')).toEqual('https://www.youtube.com/results?search_query=cats');
+	});
+
+	it('Empty prefix from disambiguation should default to Google', async () => {
+		// This simulates what happens when no prefix is entered on disambiguation page
+		const res = await app.request('http://localhost/search?q=g+test+query');
+		expect(res.status).toBe(302);
+		expect(res.headers.get('location')).toEqual('https://www.google.com/search?q=test+query');
 	});
 });

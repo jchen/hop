@@ -1,3 +1,30 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  /* Enable dark mode based on system preference */
+  @media (prefers-color-scheme: dark) {
+    html {
+      color-scheme: dark;
+    }
+  }
+  
+  /* Smooth focus transitions */
+  * {
+    @apply focus:outline-none;
+  }
+}
+
+@layer components {
+  /* Custom kbd styling for better visibility */
+  kbd {
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
+    font-weight: 500;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), 0 0 0 2px #fff inset;
+  }
+  
+  .dark kbd {
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2), 0 0 0 2px #374151 inset;
+  }
+}

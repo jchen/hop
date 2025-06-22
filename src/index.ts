@@ -1,6 +1,6 @@
 import { Hono } from 'hono';
 import { HOMEPAGE } from './utils/constants';
-import { handle } from './utils/handler';
+import { handle, handleWithDisambiguate } from './utils/handler';
 
 function safeDecodeURIComponent(str: string): string {
 	try {
@@ -78,13 +78,37 @@ app.get('/opensearch.xml', async (c) => {
 	});
 });
 
+app.get('/disambiguate.html', async (c) => {
+	if (c.env?.ASSETS) {
+		const url = new URL('/static/disambiguate.html', c.req.url);
+		const response = await c.env.ASSETS.fetch(url.toString());
+		// Ensure proper charset for HTML files
+		if (response.status === 200) {
+			const newResponse = new Response(response.body, {
+				status: response.status,
+				statusText: response.statusText,
+				headers: {
+					...Object.fromEntries(response.headers),
+					'Content-Type': 'text/html; charset=utf-8'
+				}
+			});
+			return newResponse;
+		}
+		return response;
+	}
+	// Fallback for tests
+	return new Response('<html><head><title>hop - disambiguate</title></head><body>Disambiguation page</body></html>', {
+		headers: { 'Content-Type': 'text/html; charset=utf-8' }
+	});
+});
+
 // Search pathes
 app.get('/search', c => {
 	try {
 		const query = c.req.query('q');
 		if (query) {
 			let input = decodeURIComponent(query as string).trim();
-			return c.redirect(handle(input).toString());
+			return c.redirect(handleWithDisambiguate(input, c.req.url).toString());
 		}
 	} catch (error) {
 		// Handle malformed URI components by safely decoding the raw query parameter
@@ -92,7 +116,7 @@ app.get('/search', c => {
 		if (rawQuery) {
 			const queryParam = rawQuery.split('&')[0];
 			const input = safeDecodeURIComponent(queryParam).trim();
-			return c.redirect(handle(input).toString());
+			return c.redirect(handleWithDisambiguate(input, c.req.url).toString());
 		}
 	}
 	return c.redirect(HOMEPAGE.toString(), 302);
@@ -100,7 +124,7 @@ app.get('/search', c => {
 
 app.get('/:q', c => {
 	const q = c.req.param('q').trim();
-	return c.redirect(handle(q).toString());
+	return c.redirect(handleWithDisambiguate(q, c.req.url).toString());
 });
 
 export default app;
