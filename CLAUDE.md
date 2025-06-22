@@ -41,6 +41,37 @@ Use `yarn` as the package manager for this project:
 
 Uses Jest with Miniflare environment for Cloudflare Workers testing. Tests are located in `src/index.test.ts` and cover both static file serving and search functionality.
 
+#### Running Tests
+
+- `yarn test` - Run all tests (21 tests covering static serving, search functionality, and edge cases)
+- `yarn test --testNamePattern="Google"` - Run only Google search tests
+- `yarn test --testNamePattern="Bug fixes"` - Run tests for edge cases and bug fixes
+
+#### End-to-End Testing
+
+After making changes, test the full search functionality:
+
+1. **Automated Testing**: Always run `yarn test` first to ensure all functionality works
+2. **Manual Testing**: Test key search patterns on the deployed site:
+   ```bash
+   # Test Google search with prefix stripping
+   curl -s "https://hop.jiahua.workers.dev/search?q=g+hello+world" -I | grep location
+   # Should redirect to: https://www.google.com/search?q=hello+world
+   
+   # Test percent encoding handling  
+   curl -s "https://hop.jiahua.workers.dev/search?q=g%20test%25" -I | grep location
+   # Should redirect to: https://www.google.com/search?q=test%25
+   
+   # Test fallback to Google for non-hopper queries
+   curl -s "https://hop.jiahua.workers.dev/search?q=random+query" -I | grep location
+   # Should redirect to: https://www.google.com/search?q=random+query
+   ```
+
+3. **Browser Testing**: Verify the search interface works correctly:
+   - Homepage loads with proper styling and emoji button
+   - Search form submits correctly
+   - Prefix-based searches (like "g query") work as expected
+
 ### Static Assets
 
 Located in `assets/static/` and served via Hono's static middleware:

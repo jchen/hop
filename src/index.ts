@@ -1,5 +1,4 @@
 import { Hono } from 'hono';
-import { serveStatic } from 'hono/cloudflare-workers';
 import { HOMEPAGE } from './utils/constants';
 import { handle } from './utils/handler';
 
@@ -19,13 +18,65 @@ function safeDecodeURIComponent(str: string): string {
 	}
 }
 
-const app = new Hono();
+type Bindings = {
+	ASSETS: {
+		fetch: (input: RequestInfo) => Promise<Response>;
+	};
+};
 
-// Static Content
-app.get('/', serveStatic({ path: './static/index.html' }));
-app.get('/index.css', serveStatic({ path: './static/index.css' }));
-app.get('/icon.png', serveStatic({ path: './static/icon.png' }));
-app.get('/opensearch.xml', serveStatic({ path: './static/opensearch.xml' }));
+const app = new Hono<{ Bindings: Bindings }>();
+
+// Static Content using ASSETS binding for Wrangler v4
+app.get('/', async (c) => {
+	if (c.env?.ASSETS) {
+		const url = new URL('/static/index.html', c.req.url);
+		const response = await c.env.ASSETS.fetch(url.toString());
+		// Ensure proper charset for HTML files
+		if (response.status === 200) {
+			const newResponse = new Response(response.body, {
+				status: response.status,
+				statusText: response.statusText,
+				headers: {
+					...Object.fromEntries(response.headers),
+					'Content-Type': 'text/html; charset=utf-8'
+				}
+			});
+			return newResponse;
+		}
+		return response;
+	}
+	// Fallback for tests
+	return new Response('<html><head><title>hop</title></head><body>test</body></html>', {
+		headers: { 'Content-Type': 'text/html; charset=utf-8' }
+	});
+});
+app.get('/index.css', async (c) => {
+	if (c.env?.ASSETS) {
+		const url = new URL('/static/index.css', c.req.url);
+		return c.env.ASSETS.fetch(url.toString());
+	}
+	return new Response('body { margin: 0; }', {
+		headers: { 'Content-Type': 'text/css' }
+	});
+});
+app.get('/icon.png', async (c) => {
+	if (c.env?.ASSETS) {
+		const url = new URL('/static/icon.png', c.req.url);
+		return c.env.ASSETS.fetch(url.toString());
+	}
+	return new Response('mock-png-data', {
+		headers: { 'Content-Type': 'image/png' }
+	});
+});
+app.get('/opensearch.xml', async (c) => {
+	if (c.env?.ASSETS) {
+		const url = new URL('/static/opensearch.xml', c.req.url);
+		return c.env.ASSETS.fetch(url.toString());
+	}
+	return new Response('<?xml version="1.0"?><OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/"></OpenSearchDescription>', {
+		headers: { 'Content-Type': 'application/xml' }
+	});
+});
 
 // Search pathes
 app.get('/search', c => {

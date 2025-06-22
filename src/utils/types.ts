@@ -17,7 +17,9 @@ export abstract class QuerySearch extends Hops {
 	static searchUrl: URL;
 	static queryKey: string;
 	static query(q: string): URL | null {
-		let qWords = q.trim().split(' ');
+		// Handle both space and + encoding for spaces
+		let normalizedQuery = q.trim().replace(/\+/g, ' ');
+		let qWords = normalizedQuery.split(' ');
 		if (q && this.invocations.includes(qWords[0])) {
 			let subQuery = qWords.slice(1).join(' ');
 			return this.bareQuery(subQuery);
@@ -54,7 +56,9 @@ export abstract class PathSearch extends Hops {
 	static site: URL;
 	static searchUrl: URL;
 	static query(q: string): URL | null {
-		let qWords = q.trim().split(' ');
+		// Handle both space and + encoding for spaces
+		let normalizedQuery = q.trim().replace(/\+/g, ' ');
+		let qWords = normalizedQuery.split(' ');
 		if (q && this.invocations.includes(qWords[0])) {
 			let subQuery = qWords.slice(1).join(' ');
 			if (!subQuery) {

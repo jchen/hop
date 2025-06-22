@@ -1,6 +1,8 @@
 name = "hop"
 main = "./src/index.ts"
-compatibility_date = "2022-05-03"
+compatibility_date = "2024-01-01"
 
-[site]
-bucket = "./assets"
+# For Wrangler v4, use experimental assets configuration
+[assets]
+directory = "./assets"
+binding = "ASSETS"

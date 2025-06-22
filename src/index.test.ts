@@ -131,4 +131,10 @@ describe('Bug fixes', () => {
 		expect(res.status).toBe(302);
 		expect(res.headers.get('location')).toEqual('https://en.wikipedia.org/w/index.php?search=python%25');
 	});
+
+	it('Google search with plus-encoded spaces should work correctly', async () => {
+		const res = await app.request('http://localhost/search?q=g+asdf%25');
+		expect(res.status).toBe(302);
+		expect(res.headers.get('location')).toEqual('https://www.google.com/search?q=asdf%25');
+	});
 });
